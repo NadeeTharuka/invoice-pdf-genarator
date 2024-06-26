@@ -1,6 +1,6 @@
 # Invoice PDF Generator App
 
-This project is a simple React application for generating invoice PDFs. It uses `jspdf` and `html2canvas` libraries to create a PDF from HTML content.
+This project is a React application for generating invoice PDFs. It uses `jspdf` and `html2canvas` libraries to create a PDF from HTML content.
 
 ## Features
 
