@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import React, { useRef } from 'react';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import Invoice from './components/Invoice';
 import './App.css';
 
-function App() {
+const App = () => {
+  const invoiceRef = useRef();
+
+  const generatePDF = () => {
+    const input = invoiceRef.current;
+    html2canvas(input)
+      .then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0);
+        pdf.save("invoice.pdf");
+      })
+      .catch(err => {
+        console.error('Error generating PDF:', err);
+      });
+  };
+
+  const invoiceData = {
+    date: '2024-06-26',
+    customer: 'John Doe',
+    items: [
+      { name: 'Product 1', quantity: 2, price: '$10' },
+      { name: 'Product 2', quantity: 1, price: '$20' },
+    ],
+    total: '$40'
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Invoice ref={invoiceRef} {...invoiceData} />
+      <button onClick={generatePDF}>Generate PDF</button>
     </div>
   );
-}
+};
 
 export default App;
