@@ -7,7 +7,7 @@ body {
   background-size: cover;
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #030303;
   
 }
 
@@ -20,7 +20,7 @@ body {
   background: rgba(0, 0, 0, 0.85); /* White background with transparency */
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(181, 37, 37, 0.2);
 }
 
 .invoice-container {
