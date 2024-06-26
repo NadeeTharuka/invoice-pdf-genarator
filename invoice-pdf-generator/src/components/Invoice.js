@@ -1,30 +1,103 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import './Invoice.css';
 
-const Invoice = React.forwardRef((props, ref) => (
-  <div ref={ref} className="invoice">
-    <h1>Invoice</h1>
-    <p>Date: {props.date}</p>
-    <p>Customer: {props.customer}</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.items.map((item, index) => (
-          <tr key={index}>
-            <td>{item.name}</td>
-            <td>{item.quantity}</td>
-            <td>{item.price}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <p>Total: {props.total}</p>
-  </div>
-));
+const Invoice = () => {
+  const invoiceRef = useRef();
+
+  const generatePDF = () => {
+    const input = invoiceRef.current;
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 0, 0);
+        pdf.save("invoice.pdf");
+      });
+  };
+
+  return (
+    <div className="invoice-container">
+      <div className="invoice" ref={invoiceRef}>
+        <div className="header">
+          <div className="company-details">
+            <h2>Salford & Co.</h2>
+            <p>123 Anywhere St., Any City, ST 12345</p>
+            <p>Tel: +123-456-7890</p>
+          </div>
+          <div className="invoice-title">
+            <h1>INVOICE</h1>
+          </div>
+        </div>
+        <div className="invoice-info">
+          <div className="info">
+            <p>Invoice No: 0000001</p>
+            <p>Date: 12 October, 2025</p>
+          </div>
+          <div className="bill-to">
+            <p>Bill to:</p>
+            <p>Liceria & Co.</p>
+            <p>123 Anywhere St.,</p>
+            <p>Any City, ST 12345</p>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Logo Design</td>
+              <td>$200</td>
+              <td>$200</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Advertising Design</td>
+              <td>$500</td>
+              <td>$500</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Poster Design</td>
+              <td>$500</td>
+              <td>$500</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Brochure Design</td>
+              <td>$200</td>
+              <td>$200</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Content Writer</td>
+              <td>$500</td>
+              <td>$500</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="total">
+          <p>Total: $1900</p>
+        </div>
+        <div className="bank-details">
+          <p><strong>Bank Name:</strong> Olivia Wilson</p>
+          <p><strong>Bank Account:</strong> 0123 4567 8901</p>
+        </div>
+        <div className="footer">
+          <p>If you have any question please contact: hello@reallygreatsite.com</p>
+        </div>
+      </div>
+      <button onClick={generatePDF}>Generate PDF</button>
+    </div>
+  );
+};
 
 export default Invoice;
